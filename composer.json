@@ -1,0 +1,15 @@
+{
+    "name": "so/ma-super-boutique",
+    "authors": [
+        {
+            "name": "so-212",
+            "email": "s.hommani@outlook.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "."
+        }
+    },
+    "require": {}
+}
