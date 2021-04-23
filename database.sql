@@ -1,13 +1,14 @@
 
+
+drop database demo_poo;
+
 CREATE SCHEMA IF NOT EXISTS `demo_poo` DEFAULT CHARACTER SET latin1 ;
-
-
 
 use demo_poo; 
 
 
 
-CREATE TABLE IF NOT EXISTS annonces(
+CREATE TABLE annonces(
 
 	id INT(2) NOT NULL AUTO_INCREMENT,
 	titre VARCHAR(30), 
@@ -26,6 +27,15 @@ CREATE TABLE articles(
     availability INT(1) default 0, 
     PRIMARY KEY (ID)
 ) ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE = UTF8_GENERAL_CI;
+
+CREATE TABLE users (
+    id INT(2) NOT NULL AUTO_INCREMENT,
+    email VARCHAR(50),
+    password VARCHAR(450),
+    roles VARCHAR(50),
+    PRIMARY KEY (ID)
+)  ENGINE=INNODB DEFAULT CHARSET=UTF8 COLLATE = UTF8_GENERAL_CI;
+
 
 
 alter table annonces
@@ -48,6 +58,15 @@ modify role   ;
 
 update users set roles = '["ROLE_ADMIN"]' where id = 1;
 
+delete from users where id = 3;
+
+show tables;
+
+describe users;
+
+use demo_poo;
+select * from annonces;
+select * from users;
 update table users set roles = `["ROLE_ADMIN"]` where id = 8;
 
   

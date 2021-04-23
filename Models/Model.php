@@ -70,7 +70,7 @@ class Model extends Db
     }
 
 
-    public function create(Model $model)
+    public function create()
     {
 
         //  INSERT INTO annonces (titre, description...) VALUES (?, ?, ?,...))
@@ -78,9 +78,9 @@ class Model extends Db
         $interrogationMarks  = [];
         $valeurs            = [];
 
-        foreach ($model as $champ => $valeur) {
+        foreach ($this as $champ => $valeur) {
 
-            if ($valeur && $champ !== 'table' && $champ !== 'db') {
+            if ($valeur !== null && $champ !== 'table' && $champ !== 'db') {
 
                 $champs[] = $champ;
                 $interrogationMarks[] = "?";
@@ -99,14 +99,14 @@ class Model extends Db
          VALUES (' . $liste_interrogationMark . ' ) ', $valeurs);
     }
 
-    public function update(int $id, Model $model)
+    public function update(int $id)
     {
 
         //  UPDATE annoces SET titre = ?, description = ?,... WHERE id = ?
         $champs             = [];
         $valeurs            = [];
 
-        foreach ($model as $champ => $valeur) {
+        foreach ($this as $champ => $valeur) {
 
             if ($valeur && $champ !== 'table' && $champ !== 'db') {
 
@@ -115,7 +115,7 @@ class Model extends Db
             }
         }
 
-        $valeurs[] = $id;
+        $valeurs[] = $this->$id;
 
         $liste_champ = implode(', ', $champs);
 
@@ -131,6 +131,22 @@ class Model extends Db
     {
         return $this->myQuery('DELETE  FROM ' . $this->table . '
         WHERE id = ?', [$id]);
+    }
+
+    public function hydrate($donnees)
+    {
+        foreach ($donnees as $key => $value) {
+            // On récupère le nom du setter correspondant à la clé (key)
+            // titre -> setTitre
+            $setter = 'set' . ucfirst($key);
+
+            // On vérifie si le setter existe
+            if (method_exists($this, $setter)) {
+                // On appelle le setter
+                $this->$setter($value);
+            }
+        }
+        return $this;
     }
 
 

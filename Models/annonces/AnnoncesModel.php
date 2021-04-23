@@ -110,16 +110,16 @@ class AnnoncesModel extends Model
     }
 
 
-    public function hydrate(array $donnees)
-    {
-        foreach ($donnees as $key => $value) {
-            //setter correspondant à la clef
-            $setter = 'set' . ucfirst($key);
-            if (method_exists($this, $setter)) {
-                $this->$setter($value);
-            }
-        }
+    // public function hydrate(array $donnees)
+    // {
+    //     foreach ($donnees as $key => $value) {
+    //         //setter correspondant à la clef
+    //         $setter = 'set' . ucfirst($key);
+    //         if (method_exists($this, $setter)) {
+    //             $this->$setter($value);
+    //         }
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

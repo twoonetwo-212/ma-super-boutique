@@ -1,21 +1,42 @@
 <?php
-
 namespace App\Models\users;
 
 use App\Models\Model;
 
 class UsersModel extends Model
 {
-
     protected $id;
     protected $email;
-    protected $pass;
+    protected $password;
     protected $roles;
 
     public function __construct()
     {
-        $class = str_replace(__NAMESPACE__ . '\\', '', __CLASS__);
+        $class = str_replace(__NAMESPACE__.'\\', '', __CLASS__);
         $this->table = strtolower(str_replace('Model', '', $class));
+    }
+
+    /**
+     * Récupérer un user à partir de son e-mail
+     * @param string $email 
+     * @return mixed 
+     */
+    public function findOneByEmail(string $email)
+    {
+        return $this->myQuery("SELECT * FROM {$this->table} WHERE email = ?", [$email])->fetch();
+    }
+
+    /**
+     * Crée la session de l'utilisateur
+     * @return void 
+     */
+    public function setSession()
+    {
+        $_SESSION['user'] = [
+            'id' => $this->id,
+            'email' => $this->email,
+            'roles' => $this->roles
+        ];
     }
 
     /**
@@ -26,7 +47,17 @@ class UsersModel extends Model
         return $this->id;
     }
 
-    
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
     /**
      * Get the value of email
@@ -49,31 +80,36 @@ class UsersModel extends Model
     }
 
     /**
-     * Get the value of pass
+     * Get the value of password
      */ 
-    public function getPass()
+    public function getPassword()
     {
-        return $this->pass;
+        return $this->password;
     }
 
     /**
-     * Set the value of pass
+     * Set the value of password
      *
      * @return  self
      */ 
-    public function setPass($pass)
+    public function setPassword($password)
     {
-        $this->pass = $pass;
+        $this->password = $password;
 
         return $this;
     }
 
+
     /**
      * Get the value of roles
      */ 
-    public function getRoles()
+    public function getRoles():array
     {
-        return $this->roles;
+        $roles = $this->roles;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**
@@ -83,7 +119,7 @@ class UsersModel extends Model
      */ 
     public function setRoles($roles)
     {
-        $this->roles = $roles;
+        $this->roles = json_decode($roles);
 
         return $this;
     }
