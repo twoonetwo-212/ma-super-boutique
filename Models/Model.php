@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use App\Db\Db;
+
 use PDOStatement;
+use App\Core\Db;
 
 class Model extends Db
 {
